@@ -28,6 +28,11 @@ class Product extends Model
         return $this->stock > 0;
     }
 
+    public function canOrder(int $quantity): bool
+    {
+        return $quantity > 0 && $quantity <= $this->stock;
+    }
+
     public function formattedPrice(): string
     {
         return number_format((float) $this->price, 2, '.', ' ').' ₽';
