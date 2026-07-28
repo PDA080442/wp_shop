@@ -6,12 +6,9 @@
     <h1 class="page-title">Корзина</h1>
 
     @if ($items->isEmpty())
-        <div class="mt-8 rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
-            <p class="text-lg font-medium text-gray-900">{{ __('cart.empty') }}</p>
-            <a href="{{ route('catalog.index') }}" class="btn-primary mt-4">
-                {{ __('cart.go_to_catalog') }}
-            </a>
-        </div>
+        <x-empty-state icon="cart" :title="__('cart.empty')" :description="__('ux.cart_empty_description')">
+            <a href="{{ route('catalog.index') }}" class="btn-primary">{{ __('cart.go_to_catalog') }}</a>
+        </x-empty-state>
     @else
         <div class="mt-6 overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
             <table class="min-w-full divide-y divide-gray-200">

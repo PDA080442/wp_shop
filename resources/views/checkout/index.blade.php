@@ -24,7 +24,7 @@
                        value="{{ old('customer_name') }}"
                        required
                        maxlength="255"
-                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('customer_name') border-red-500 @enderror">
+                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('customer_name') input-error @enderror">
                 @error('customer_name')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -40,7 +40,7 @@
                        value="{{ old('customer_email') }}"
                        required
                        maxlength="255"
-                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('customer_email') border-red-500 @enderror">
+                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('customer_email') input-error @enderror">
                 @error('customer_email')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror

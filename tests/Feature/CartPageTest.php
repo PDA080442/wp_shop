@@ -16,6 +16,7 @@ class CartPageTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Корзина пуста');
+        $response->assertSee('Добавьте товары из каталога');
         $response->assertSee('Перейти в каталог');
         $response->assertSee(route('catalog.index'), false);
     }

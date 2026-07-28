@@ -16,13 +16,12 @@
             {{ $products->links() }}
         </div>
     @else
-        <div class="mt-8 rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
-            <p class="text-lg font-medium text-gray-900">Товары не найдены</p>
-            <p class="mt-2 text-gray-600">Заполните каталог тестовыми данными:</p>
+        <x-empty-state icon="catalog" :title="__('ux.catalog_empty_title')" :description="__('ux.catalog_empty_description')">
+            <a href="{{ route('catalog.index') }}" class="btn-primary">{{ __('ux.refresh') }}</a>
             <div class="mt-4 space-y-1 font-mono text-sm text-gray-700">
                 <p>php artisan tinker</p>
-                <p>Product::factory()-&gt;count(50)-&gt;create();</p>
+                <p>{{ __('ux.catalog_empty_hint') }}</p>
             </div>
-        </div>
+        </x-empty-state>
     @endif
 @endsection

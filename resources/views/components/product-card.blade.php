@@ -2,7 +2,7 @@
 
 <article @class([
     'product-card flex flex-col',
-    'opacity-60' => ! $product->isInStock(),
+    'product-card--out-of-stock' => ! $product->isInStock(),
 ])>
     <div class="flex-1">
         <a href="{{ route('products.show', $product->id) }}" class="text-lg font-semibold text-gray-900 hover:text-gray-700">

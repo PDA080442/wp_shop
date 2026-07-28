@@ -27,7 +27,10 @@
                    value="{{ old('quantity', $item->quantity) }}"
                    min="1"
                    max="{{ max($item->stock, 1) }}"
-                   class="w-20 rounded-md border border-gray-300 px-2 py-1 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                   class="w-20 rounded-md border border-gray-300 px-2 py-1 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('quantity') input-error @enderror">
+            @error('quantity')
+                <p class="mt-1 w-full text-sm text-red-600">{{ $message }}</p>
+            @enderror
             <button type="submit"
                     class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
                 {{ __('cart.update') }}
