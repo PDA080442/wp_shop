@@ -47,7 +47,10 @@ class AddToCartRequest extends FormRequest
                     return;
                 }
 
-                if (! $this->resolvedProduct->canOrder($quantity)) {
+                $existing = (int) (session('cart', [])[$this->resolvedProduct->id] ?? 0);
+                $totalQuantity = $existing + $quantity;
+
+                if (! $this->resolvedProduct->canOrder($totalQuantity)) {
                     $validator->errors()->add('quantity', __('cart.insufficient_stock', [
                         'stock' => $this->resolvedProduct->stock,
                     ]));

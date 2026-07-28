@@ -79,4 +79,20 @@ class AddToCartValidationTest extends TestCase
         $response->assertSessionHasNoErrors();
         $this->assertEquals(2, session('cart')[$product->id]);
     }
+
+    public function test_cumulative_add_rejects_when_total_exceeds_stock(): void
+    {
+        $product = Product::factory()->create(['stock' => 5]);
+        session(['cart' => [$product->id => 3]]);
+
+        $response = $this->from(route('products.show', $product))
+            ->post(route('cart.add'), [
+                'product_id' => $product->id,
+                'quantity' => 3,
+            ]);
+
+        $response->assertRedirect(route('products.show', $product));
+        $response->assertSessionHasErrors(['quantity' => 'Доступно только 5 шт.']);
+        $this->assertEquals(3, session('cart')[$product->id]);
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\InsufficientStockException;
 use App\Http\Requests\AddToCartRequest;
+use App\Http\Requests\UpdateCartRequest;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -22,21 +24,43 @@ class CartController extends Controller
                 (int) $request->validated('quantity'),
             );
         } catch (InsufficientStockException $e) {
-            return back()
-                ->withErrors(['quantity' => __('cart.insufficient_stock', ['stock' => $e->available])])
-                ->withInput();
+            return $this->stockErrorRedirect($e);
         }
 
         return back()->with('success', __('cart.added'));
     }
 
-    public function update(): RedirectResponse
+    public function update(UpdateCartRequest $request, Product $product): RedirectResponse
     {
-        return redirect()->back();
+        try {
+            cart()->update($product->id, (int) $request->validated('quantity'));
+        } catch (InsufficientStockException $e) {
+            return $this->stockErrorRedirect($e);
+        }
+
+        return back()->with('success', __('cart.updated'));
     }
 
-    public function remove(): RedirectResponse
+    public function remove(Product $product): RedirectResponse
     {
-        return redirect()->back();
+        cart()->remove($product->id);
+
+        return back()->with('success', __('cart.removed'));
+    }
+
+    public function clear(): RedirectResponse
+    {
+        cart()->clear();
+
+        return redirect()->route('cart.index')->with('success', __('cart.cleared'));
+    }
+
+    private function stockErrorRedirect(InsufficientStockException $e): RedirectResponse
+    {
+        $message = $e->available === 0
+            ? __('cart.out_of_stock')
+            : __('cart.insufficient_stock', ['stock' => $e->available]);
+
+        return back()->withErrors(['quantity' => $message])->withInput();
     }
 }
