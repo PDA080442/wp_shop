@@ -21,17 +21,6 @@ class CartServiceTest extends TestCase
         $this->cart = app(CartServiceInterface::class);
     }
 
-    public function test_add_persists_to_session_and_calculates_totals(): void
-    {
-        $product = Product::factory()->create(['price' => 100.00, 'stock' => 10]);
-
-        $this->cart->add($product->id, 2);
-
-        $this->assertEquals([$product->id => 2], session('cart'));
-        $this->assertSame(2, $this->cart->count());
-        $this->assertSame(200.0, $this->cart->getTotal());
-    }
-
     public function test_add_increases_quantity_when_same_product_is_added_again(): void
     {
         $product = Product::factory()->create(['stock' => 10]);

@@ -15,6 +15,6 @@
     </ul>
 
     <p class="mt-4 border-t border-gray-200 pt-4 text-xl font-semibold text-gray-900">
-        {{ __('checkout.total', ['amount' => number_format($total, 2, '.', ' ') . ' ₽']) }}
+        {{ __('checkout.total', ['amount' => money($total)]) }}
     </p>
 </div>

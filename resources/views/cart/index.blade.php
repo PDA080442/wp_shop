@@ -43,7 +43,7 @@
             <div class="space-y-1 text-gray-700">
                 <p>{{ __('cart.positions_count', ['count' => $positionsCount]) }}</p>
                 <p class="text-xl font-semibold text-gray-900">
-                    {{ __('cart.total', ['amount' => number_format($total, 2, '.', ' ') . ' ₽']) }}
+                    {{ __('cart.total', ['amount' => money($total)]) }}
                 </p>
             </div>
 
