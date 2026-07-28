@@ -12,9 +12,20 @@ class CheckoutController extends Controller
         private readonly OrderServiceInterface $orderService,
     ) {}
 
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
-        return view('checkout.index');
+        $items = cart()->getItems();
+
+        if ($items->isEmpty()) {
+            return redirect()
+                ->route('cart.index')
+                ->with('success', __('checkout.cart_empty_redirect'));
+        }
+
+        return view('checkout.index', [
+            'items' => $items,
+            'total' => cart()->getTotal(),
+        ]);
     }
 
     public function store(): RedirectResponse
