@@ -127,8 +127,9 @@ stor/
 | Команда | Описание |
 |---------|----------|
 | `php artisan migrate` | Выполнить миграции |
-| `php artisan db:seed` | Заполнить БД (сейчас — тестовый user) |
-| `php artisan products:seed {count}` | Заполнить товарами *(планируется, EP7)* |
+| `php artisan db:seed` | Заполнить БД (тестовый user + ProductSeeder) |
+| `php artisan products:seed {count=50}` | Заполнить товарами (faker) |
+| `php artisan products:seed 100 --fresh` | Очистить products и создать 100 |
 | `php artisan test` | Запустить тесты |
 | `php artisan serve` | Локальный dev-сервер |
 

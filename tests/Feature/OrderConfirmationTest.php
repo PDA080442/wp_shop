@@ -44,11 +44,7 @@ class OrderConfirmationTest extends TestCase
 
     public function test_success_page_returns_404_without_session_flash(): void
     {
-        $order = Order::create([
-            'customer_name' => 'Test User',
-            'customer_email' => 'test@example.com',
-            'total' => 100.00,
-        ]);
+        $order = Order::factory()->create();
 
         $response = $this->get(route('checkout.success', $order));
 
@@ -57,11 +53,7 @@ class OrderConfirmationTest extends TestCase
 
     public function test_success_page_returns_404_for_wrong_order_id_in_flash(): void
     {
-        $order = Order::create([
-            'customer_name' => 'Test User',
-            'customer_email' => 'test@example.com',
-            'total' => 100.00,
-        ]);
+        $order = Order::factory()->create();
 
         $response = $this->withSession(['last_order_id' => $order->id + 1])
             ->get(route('checkout.success', $order));

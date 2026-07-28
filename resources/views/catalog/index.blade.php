@@ -18,8 +18,7 @@
     @else
         <x-empty-state icon="catalog" :title="__('ux.catalog_empty_title')" :description="__('ux.catalog_empty_description')">
             <a href="{{ route('catalog.index') }}" class="btn-primary">{{ __('ux.refresh') }}</a>
-            <div class="mt-4 space-y-1 font-mono text-sm text-gray-700">
-                <p>php artisan tinker</p>
+            <div class="mt-4 font-mono text-sm text-gray-700">
                 <p>{{ __('ux.catalog_empty_hint') }}</p>
             </div>
         </x-empty-state>
