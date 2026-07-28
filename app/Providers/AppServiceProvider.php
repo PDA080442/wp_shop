@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useTailwind();
 
-        View::composer('layouts.partials.header', function ($view) {
+        View::composer('layouts.app', function ($view) {
             $view->with('cartCount', cart()->count());
         });
     }

@@ -3,9 +3,9 @@
 @section('title', __('checkout.success_title') . ' | ' . config('app.name'))
 
 @section('content')
-    <div class="mx-auto max-w-3xl rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
+    <div class="mx-auto max-w-3xl rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-8">
         <div class="text-center">
-            <h1 class="text-2xl font-semibold text-gray-900">{{ __('checkout.success_title') }}</h1>
+            <h1 class="page-title">{{ __('checkout.success_title') }}</h1>
             <p class="mt-2 text-lg text-gray-700">
                 {{ __('checkout.order_number', ['id' => $order->id]) }}
             </p>
@@ -31,8 +31,7 @@
         </p>
 
         <div class="mt-8 text-center">
-            <a href="{{ route('catalog.index') }}"
-               class="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">
+            <a href="{{ route('catalog.index') }}" class="btn-primary">
                 {{ __('checkout.continue_shopping') }}
             </a>
         </div>

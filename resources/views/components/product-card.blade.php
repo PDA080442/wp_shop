@@ -1,6 +1,8 @@
+@props(['product'])
+
 <article @class([
     'product-card flex flex-col',
-    'opacity-60' => ! $product->isInStock(),
+    'product-card--out-of-stock' => ! $product->isInStock(),
 ])>
     <div class="flex-1">
         <a href="{{ route('products.show', $product->id) }}" class="text-lg font-semibold text-gray-900 hover:text-gray-700">
@@ -31,8 +33,7 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit"
-                        class="inline-flex items-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800">
+                <button type="submit" class="btn-primary px-3 py-2">
                     В корзину
                 </button>
             </form>
