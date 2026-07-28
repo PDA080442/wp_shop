@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Товар #' . $id . ' | ' . config('app.name'))
+@section('title', $product->name . ' | ' . config('app.name'))
 
 @section('content')
-    <h1 class="text-2xl font-semibold">Карточка товара #{{ $id }}</h1>
+    <h1 class="text-2xl font-semibold">{{ $product->name }}</h1>
+    <p class="mt-2 text-gray-600">Карточка товара #{{ $product->id }}</p>
 @endsection
