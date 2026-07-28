@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddToCartRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -12,9 +13,9 @@ class CartController extends Controller
         return view('cart.index');
     }
 
-    public function add(): RedirectResponse
+    public function add(AddToCartRequest $request): RedirectResponse
     {
-        return redirect()->back();
+        return back()->with('success', __('cart.added'));
     }
 
     public function update(): RedirectResponse
