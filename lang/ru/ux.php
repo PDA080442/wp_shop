@@ -8,7 +8,7 @@ return [
     'back_to_catalog' => 'Вернуться в каталог',
     'catalog_empty_title' => 'Товары не найдены',
     'catalog_empty_description' => 'Каталог пока пуст. Заполните его тестовыми данными.',
-    'catalog_empty_hint' => 'Product::factory()->count(50)->create();',
+    'catalog_empty_hint' => 'php artisan db:seed --class=ProductSeeder',
     'cart_empty_description' => 'Добавьте товары из каталога',
     'refresh' => 'Обновить',
 ];

@@ -27,7 +27,7 @@ class UxStatesTest extends TestCase
         $response->assertOk();
         $response->assertSee('Товары не найдены');
         $response->assertSee('Каталог пока пуст');
-        $response->assertSee('Product::factory()->count(50)->create();');
+        $response->assertSee('php artisan db:seed --class=ProductSeeder');
         $response->assertSee('Обновить');
     }
 
