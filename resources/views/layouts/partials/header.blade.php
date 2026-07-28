@@ -14,9 +14,7 @@
                 <li>
                     <a href="{{ route('cart.index') }}" class="relative inline-flex items-center text-gray-600 hover:text-gray-900">
                         Корзина
-                        @if ($cartCount > 0)
-                            <span class="cart-badge">{{ $cartCount }}</span>
-                        @endif
+                        <x-cart-badge :count="$cartCount" />
                     </a>
                 </li>
             </ul>

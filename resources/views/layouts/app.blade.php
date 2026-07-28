@@ -11,7 +11,7 @@
     @include('layouts.partials.header')
 
     <main class="flex-1 container mx-auto px-4 py-6 sm:px-6 sm:py-8">
-        @include('layouts.partials.alerts')
+        <x-flash-messages />
         @yield('content')
     </main>
 

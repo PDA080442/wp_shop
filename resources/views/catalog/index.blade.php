@@ -8,7 +8,7 @@
     @if ($products->count() > 0)
         <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach ($products as $product)
-                @include('catalog.partials.product-card', ['product' => $product])
+                <x-product-card :product="$product" />
             @endforeach
         </div>
 

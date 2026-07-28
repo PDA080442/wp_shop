@@ -1,3 +1,5 @@
+@props(['product'])
+
 <article @class([
     'product-card flex flex-col',
     'opacity-60' => ! $product->isInStock(),
