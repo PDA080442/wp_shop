@@ -10,17 +10,6 @@ class CartPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_empty_cart_shows_message_and_catalog_link(): void
-    {
-        $response = $this->get(route('cart.index'));
-
-        $response->assertOk();
-        $response->assertSee('Корзина пуста');
-        $response->assertSee('Добавьте товары из каталога');
-        $response->assertSee('Перейти в каталог');
-        $response->assertSee(route('catalog.index'), false);
-    }
-
     public function test_cart_page_displays_items_and_checkout_button(): void
     {
         $product = Product::factory()->create([

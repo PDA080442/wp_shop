@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['name', 'price', 'stock', 'image'])]
 class Product extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProductFactory> */
+    /** @use HasFactory<ProductFactory> */
     use HasFactory;
 
     /**
@@ -35,7 +36,7 @@ class Product extends Model
 
     public function formattedPrice(): string
     {
-        return number_format((float) $this->price, 2, '.', ' ').' ₽';
+        return money($this->price);
     }
 
     public function imageUrl(): string

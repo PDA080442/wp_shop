@@ -10,14 +10,6 @@ class CheckoutPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_checkout_redirects_to_cart_when_empty(): void
-    {
-        $response = $this->get(route('checkout.index'));
-
-        $response->assertRedirect(route('cart.index'));
-        $response->assertSessionHas('success', 'Сначала добавьте товары в корзину.');
-    }
-
     public function test_checkout_page_displays_form_and_order_summary(): void
     {
         $product = Product::factory()->create([

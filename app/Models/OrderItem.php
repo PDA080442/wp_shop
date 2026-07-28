@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderItemFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['order_id', 'product_id', 'product_name', 'price', 'quantity'])]
 class OrderItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderItemFactory> */
+    /** @use HasFactory<OrderItemFactory> */
     use HasFactory;
 
     /**
@@ -58,11 +59,11 @@ class OrderItem extends Model
 
     public function formattedPrice(): string
     {
-        return number_format((float) $this->price, 2, '.', ' ').' ₽';
+        return money($this->price);
     }
 
     public function formattedSubtotal(): string
     {
-        return number_format($this->subtotal(), 2, '.', ' ').' ₽';
+        return money($this->subtotal());
     }
 }

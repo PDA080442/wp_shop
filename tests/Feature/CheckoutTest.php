@@ -32,6 +32,18 @@ class CheckoutTest extends TestCase
         $response->assertSessionHas('success', 'Сначала добавьте товары в корзину.');
     }
 
+    public function test_checkout_store_redirects_to_cart_when_cart_is_empty(): void
+    {
+        $response = $this->from(route('checkout.index'))
+            ->post(route('checkout.store'), [
+                'customer_name' => 'Иван Петров',
+                'customer_email' => 'ivan@example.com',
+            ]);
+
+        $response->assertRedirect(route('cart.index'));
+        $this->assertSame(0, Order::query()->count());
+    }
+
     public function test_checkout_creates_order_and_order_items_in_database(): void
     {
         session(['cart' => [$this->product->id => 2]]);

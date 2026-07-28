@@ -8,3 +8,10 @@ if (! function_exists('cart')) {
         return app(CartServiceInterface::class);
     }
 }
+
+if (! function_exists('money')) {
+    function money(float|string $amount): string
+    {
+        return number_format((float) $amount, 2, '.', ' ').' ₽';
+    }
+}

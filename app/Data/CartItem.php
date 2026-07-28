@@ -15,12 +15,12 @@ readonly class CartItem
 
     public function formattedPrice(): string
     {
-        return number_format((float) $this->price, 2, '.', ' ').' ₽';
+        return money($this->price);
     }
 
     public function formattedSubtotal(): string
     {
-        return number_format($this->subtotal, 2, '.', ' ').' ₽';
+        return money($this->subtotal);
     }
 
     public function exceedsStock(): bool
