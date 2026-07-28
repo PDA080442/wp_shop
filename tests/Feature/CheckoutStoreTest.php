@@ -30,6 +30,7 @@ class CheckoutStoreTest extends TestCase
         $this->assertNotNull($order);
         $response->assertRedirect(route('checkout.success', $order));
         $response->assertSessionHas('success', 'Заказ успешно оформлен.');
+        $response->assertSessionHas('last_order_id', $order->id);
 
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,

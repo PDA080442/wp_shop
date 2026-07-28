@@ -41,4 +41,9 @@ class Order extends Model
 
         return $this;
     }
+
+    public function formattedTotal(): string
+    {
+        return number_format((float) $this->total, 2, '.', ' ').' ₽';
+    }
 }

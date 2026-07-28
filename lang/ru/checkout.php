@@ -15,4 +15,11 @@ return [
     'success_title' => 'Спасибо за заказ!',
     'order_number' => 'Номер заказа: #:id',
     'continue_shopping' => 'Продолжить покупки',
+    'recipient' => 'Получатель',
+    'email_notification' => 'Уведомления отправим на :email',
+    'order_items' => 'Состав заказа',
+    'item_name' => 'Товар',
+    'item_quantity' => 'Кол-во',
+    'item_price' => 'Цена',
+    'item_subtotal' => 'Сумма',
 ];

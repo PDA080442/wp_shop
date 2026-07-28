@@ -61,11 +61,16 @@ class CheckoutController extends Controller
 
         return redirect()
             ->route('checkout.success', $order)
-            ->with('success', __('checkout.order_created'));
+            ->with('success', __('checkout.order_created'))
+            ->with('last_order_id', $order->id);
     }
 
     public function success(Order $order): View
     {
+        abort_unless((int) session('last_order_id') === $order->id, 404);
+
+        $order->load('items');
+
         return view('checkout.success', compact('order'));
     }
 }
