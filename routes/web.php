@@ -16,3 +16,4 @@ Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
