@@ -6,6 +6,7 @@ use App\Contracts\OrderServiceInterface;
 use App\Contracts\ProductServiceInterface;
 use App\Services\OrderService;
 use App\Services\ProductService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useTailwind();
+
         View::composer('layouts.partials.header', function ($view) {
             $cart = session('cart', []);
             $view->with('cartCount', is_array($cart) ? array_sum($cart) : 0);

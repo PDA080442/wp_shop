@@ -13,7 +13,9 @@ class ProductController extends Controller
 
     public function index(): View
     {
-        return view('catalog.index');
+        $products = $this->productService->getPaginated(12);
+
+        return view('catalog.index', compact('products'));
     }
 
     public function show(int $id): View
