@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\ProductServiceInterface;
+use App\Models\Product;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -18,10 +19,8 @@ class ProductController extends Controller
         return view('catalog.index', compact('products'));
     }
 
-    public function show(int $id): View
+    public function show(Product $product): View
     {
-        $product = $this->productService->getById($id);
-
         return view('products.show', compact('product'));
     }
 }

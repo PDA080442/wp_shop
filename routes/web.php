@@ -6,7 +6,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'index'])->name('catalog.index');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
