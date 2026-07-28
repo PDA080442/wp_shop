@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Exceptions\InsufficientStockException;
+use App\Models\Order;
 use App\Models\Product;
 use App\Services\OrderService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,7 +13,7 @@ class OrderServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_create_order_persists_items_and_decrements_stock(): void
+    public function test_create_order_creates_order_items_and_decrements_stock(): void
     {
         $product = Product::factory()->create([
             'name' => 'Service Product',
@@ -25,6 +26,19 @@ class OrderServiceTest extends TestCase
             [$product->id => 3],
         );
 
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'customer_name' => 'Test User',
+            'customer_email' => 'test@example.com',
+        ]);
+
+        $this->assertDatabaseHas('order_items', [
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'product_name' => 'Service Product',
+            'quantity' => 3,
+        ]);
+
         $this->assertSame('Test User', $order->customer_name);
         $this->assertCount(1, $order->items);
         $this->assertSame('Service Product', $order->items->first()->product_name);
@@ -32,15 +46,22 @@ class OrderServiceTest extends TestCase
         $this->assertSame(7, $product->fresh()->stock);
     }
 
-    public function test_create_order_throws_when_stock_insufficient(): void
+    public function test_create_order_throws_when_stock_insufficient_and_rolls_back_transaction(): void
     {
         $product = Product::factory()->create(['stock' => 1]);
 
-        $this->expectException(InsufficientStockException::class);
+        try {
+            (new OrderService)->createOrder(
+                ['customer_name' => 'Test User', 'customer_email' => 'test@example.com'],
+                [$product->id => 5],
+            );
 
-        (new OrderService)->createOrder(
-            ['customer_name' => 'Test User', 'customer_email' => 'test@example.com'],
-            [$product->id => 5],
-        );
+            $this->fail('Expected InsufficientStockException was not thrown.');
+        } catch (InsufficientStockException) {
+            // expected
+        }
+
+        $this->assertSame(0, Order::query()->count());
+        $this->assertSame(1, $product->fresh()->stock);
     }
 }
