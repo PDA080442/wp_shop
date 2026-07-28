@@ -38,14 +38,13 @@
                                min="1"
                                max="{{ $product->stock }}"
                                required
-                               class="mt-1 block w-24 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 @error('quantity') border-red-500 @enderror">
+                               class="mt-1 block w-24 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('quantity') border-red-500 @enderror">
                         @error('quantity')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <button type="submit"
-                            class="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">
+                    <button type="submit" class="btn-primary">
                         В корзину
                     </button>
                 </div>

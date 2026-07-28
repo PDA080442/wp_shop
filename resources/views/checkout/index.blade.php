@@ -7,11 +7,11 @@
         {{ __('checkout.back_to_cart') }}
     </a>
 
-    <h1 class="mt-4 text-2xl font-semibold text-gray-900">{{ __('checkout.title') }}</h1>
+    <h1 class="page-title mt-4">{{ __('checkout.title') }}</h1>
 
     <div class="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <form method="POST" action="{{ route('checkout.store') }}"
-              class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
             @csrf
 
             <div>
@@ -24,7 +24,7 @@
                        value="{{ old('customer_name') }}"
                        required
                        maxlength="255"
-                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 @error('customer_name') border-red-500 @enderror">
+                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('customer_name') border-red-500 @enderror">
                 @error('customer_name')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -40,14 +40,13 @@
                        value="{{ old('customer_email') }}"
                        required
                        maxlength="255"
-                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 @error('customer_email') border-red-500 @enderror">
+                       class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary @error('customer_email') border-red-500 @enderror">
                 @error('customer_email')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
 
-            <button type="submit"
-                    class="mt-6 inline-flex w-full items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">
+            <button type="submit" class="btn-primary mt-6 w-full justify-center">
                 {{ __('checkout.confirm') }}
             </button>
         </form>

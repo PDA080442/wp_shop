@@ -3,7 +3,7 @@
 @section('title', 'Каталог | ' . config('app.name'))
 
 @section('content')
-    <h1 class="text-2xl font-semibold text-gray-900">Каталог товаров</h1>
+    <h1 class="page-title">Каталог товаров</h1>
 
     @if ($products->count() > 0)
         <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

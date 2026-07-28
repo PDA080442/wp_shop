@@ -31,8 +31,7 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit"
-                        class="inline-flex items-center rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800">
+                <button type="submit" class="btn-primary px-3 py-2">
                     В корзину
                 </button>
             </form>
