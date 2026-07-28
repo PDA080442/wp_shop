@@ -15,7 +15,7 @@ class ProductSeederTest extends TestCase
     {
         $this->seed(ProductSeeder::class);
 
-        $this->assertSame(50, Product::query()->count());
+        $this->assertSame(12, Product::query()->count());
     }
 
     public function test_seeder_respects_count_parameter(): void
@@ -30,7 +30,7 @@ class ProductSeederTest extends TestCase
         $this->app->make(ProductSeeder::class)->run();
         $this->app->make(ProductSeeder::class)->run();
 
-        $this->assertSame(50, Product::query()->count());
+        $this->assertSame(12, Product::query()->count());
     }
 
     public function test_seeder_fresh_replaces_products(): void
@@ -57,6 +57,6 @@ class ProductSeederTest extends TestCase
         $this->artisan('db:seed', ['--class' => ProductSeeder::class])
             ->assertSuccessful();
 
-        $this->assertSame(50, Product::query()->count());
+        $this->assertSame(12, Product::query()->count());
     }
 }

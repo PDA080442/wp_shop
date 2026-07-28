@@ -12,7 +12,7 @@ class SeedProductsCommand extends Command
      * @var string
      */
     protected $signature = 'products:seed
-                            {count=50 : Number of products to create}
+                            {count=12 : Number of products to create}
                             {--fresh : Truncate products table before seeding}';
 
     /**
