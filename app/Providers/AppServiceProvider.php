@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\CartServiceInterface;
 use App\Contracts\OrderServiceInterface;
 use App\Contracts\ProductServiceInterface;
+use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use Illuminate\Pagination\Paginator;
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(OrderServiceInterface::class, OrderService::class);
+        $this->app->singleton(CartServiceInterface::class, CartService::class);
     }
 
     /**
@@ -29,8 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useTailwind();
 
         View::composer('layouts.partials.header', function ($view) {
-            $cart = session('cart', []);
-            $view->with('cartCount', is_array($cart) ? array_sum($cart) : 0);
+            $view->with('cartCount', cart()->count());
         });
     }
 }

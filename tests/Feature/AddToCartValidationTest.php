@@ -77,5 +77,6 @@ class AddToCartValidationTest extends TestCase
         $response->assertRedirect(route('products.show', $product));
         $response->assertSessionHas('success', 'Товар добавлен в корзину.');
         $response->assertSessionHasNoErrors();
+        $this->assertEquals(2, session('cart')[$product->id]);
     }
 }
