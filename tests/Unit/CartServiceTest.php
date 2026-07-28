@@ -32,7 +32,7 @@ class CartServiceTest extends TestCase
         $this->assertSame(200.0, $this->cart->getTotal());
     }
 
-    public function test_add_accumulates_quantity(): void
+    public function test_add_increases_quantity_when_same_product_is_added_again(): void
     {
         $product = Product::factory()->create(['stock' => 10]);
 
@@ -41,6 +41,17 @@ class CartServiceTest extends TestCase
 
         $this->assertEquals([$product->id => 5], session('cart'));
         $this->assertSame(5, $this->cart->count());
+    }
+
+    public function test_get_total_correctly_sums_price_times_quantity(): void
+    {
+        $first = Product::factory()->create(['price' => 100.00, 'stock' => 10]);
+        $second = Product::factory()->create(['price' => 50.00, 'stock' => 10]);
+
+        $this->cart->add($first->id, 2);
+        $this->cart->add($second->id, 3);
+
+        $this->assertSame(350.0, $this->cart->getTotal());
     }
 
     public function test_add_throws_when_cumulative_quantity_exceeds_stock(): void

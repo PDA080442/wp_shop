@@ -4,6 +4,15 @@
     'product-card flex flex-col',
     'product-card--out-of-stock' => ! $product->isInStock(),
 ])>
+    <a href="{{ route('products.show', $product->id) }}" class="mb-4 block overflow-hidden rounded-md bg-gray-100">
+        <img src="{{ $product->imageUrl() }}"
+             alt="{{ $product->name }}"
+             class="aspect-[4/3] w-full object-cover"
+             loading="lazy"
+             width="600"
+             height="400">
+    </a>
+
     <div class="flex-1">
         <a href="{{ route('products.show', $product->id) }}" class="text-lg font-semibold text-gray-900 hover:text-gray-700">
             {{ $product->name }}

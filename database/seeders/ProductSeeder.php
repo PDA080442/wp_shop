@@ -9,7 +9,7 @@ class ProductSeeder extends Seeder
 {
     public function run(?int $count = null): void
     {
-        $count = $count ?? (int) env('PRODUCT_SEED_COUNT', 50);
+        $count = $count ?? (int) env('PRODUCT_SEED_COUNT', 12);
 
         if ($this->shouldFresh()) {
             Product::query()->delete();
@@ -20,9 +20,16 @@ class ProductSeeder extends Seeder
             return;
         }
 
-        Product::factory()->count($count)->create();
+        // Keep a couple of sold-out products so the "out of stock" UI is always demonstrable.
+        $outOfStock = $count >= 4 ? 2 : 0;
 
-        $this->command?->info("Seeded {$count} products.");
+        Product::factory()->count($count - $outOfStock)->inStock()->create();
+
+        if ($outOfStock > 0) {
+            Product::factory()->count($outOfStock)->outOfStock()->create();
+        }
+
+        $this->command?->info("Seeded {$count} products ({$outOfStock} out of stock).");
     }
 
     private function shouldFresh(): bool

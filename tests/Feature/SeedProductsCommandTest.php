@@ -15,7 +15,7 @@ class SeedProductsCommandTest extends TestCase
         $this->artisan('products:seed')
             ->assertSuccessful();
 
-        $this->assertSame(50, Product::query()->count());
+        $this->assertSame(12, Product::query()->count());
     }
 
     public function test_products_seed_respects_count_argument(): void

@@ -128,10 +128,15 @@ stor/
 |---------|----------|
 | `php artisan migrate` | Выполнить миграции |
 | `php artisan db:seed` | Заполнить БД (тестовый user + ProductSeeder) |
-| `php artisan products:seed {count=50}` | Заполнить товарами (faker) |
-| `php artisan products:seed 100 --fresh` | Очистить products и создать 100 |
+| `php artisan products:seed {count=12}` | Заполнить товарами (faker) |
+| `php artisan products:seed 12 --fresh` | Очистить products и создать 12 |
 | `php artisan test` | Запустить тесты |
 | `php artisan serve` | Локальный dev-сервер |
+
+Фото товаров лежат в `public/images/products/product-01.jpg … product-12.jpg`; фабрика
+проставляет их по кругу в поле `products.image`. Чтобы заменить картинку — положите файл
+с тем же именем или запишите в `image` свой путь либо внешний URL. Если файла нет, товар
+покажет сгенерированный градиентный плейсхолдер.
 
 ## Функциональность
 
