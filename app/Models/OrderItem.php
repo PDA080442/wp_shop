@@ -51,4 +51,14 @@ class OrderItem extends Model
     {
         return (float) $this->price * $this->quantity;
     }
+
+    public function formattedPrice(): string
+    {
+        return number_format((float) $this->price, 2, '.', ' ').' ₽';
+    }
+
+    public function formattedSubtotal(): string
+    {
+        return number_format($this->subtotal(), 2, '.', ' ').' ₽';
+    }
 }

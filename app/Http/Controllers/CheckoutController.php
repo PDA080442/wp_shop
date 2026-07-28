@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\OrderServiceInterface;
+use App\Exceptions\InsufficientStockException;
+use App\Http\Requests\CheckoutRequest;
+use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -12,13 +15,62 @@ class CheckoutController extends Controller
         private readonly OrderServiceInterface $orderService,
     ) {}
 
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
-        return view('checkout.index');
+        $items = cart()->getItems();
+
+        if ($items->isEmpty()) {
+            return redirect()
+                ->route('cart.index')
+                ->with('success', __('checkout.cart_empty_redirect'));
+        }
+
+        return view('checkout.index', [
+            'items' => $items,
+            'total' => cart()->getTotal(),
+        ]);
     }
 
-    public function store(): RedirectResponse
+    public function store(CheckoutRequest $request): RedirectResponse
     {
-        return redirect()->back();
+        $cartItems = cart()->contents();
+
+        if ($cartItems === []) {
+            return redirect()
+                ->route('cart.index')
+                ->with('success', __('checkout.cart_empty_redirect'));
+        }
+
+        try {
+            $order = $this->orderService->createOrder(
+                $request->validated(),
+                $cartItems,
+            );
+        } catch (InsufficientStockException $e) {
+            $message = $e->available === 0
+                ? __('checkout.stock_unavailable', ['name' => $e->productName])
+                : __('checkout.stock_changed', [
+                    'name' => $e->productName,
+                    'stock' => $e->available,
+                ]);
+
+            return back()->withErrors(['checkout' => $message])->withInput();
+        }
+
+        cart()->clear();
+
+        return redirect()
+            ->route('checkout.success', $order)
+            ->with('success', __('checkout.order_created'))
+            ->with('last_order_id', $order->id);
+    }
+
+    public function success(Order $order): View
+    {
+        abort_unless((int) session('last_order_id') === $order->id, 404);
+
+        $order->load('items');
+
+        return view('checkout.success', compact('order'));
     }
 }

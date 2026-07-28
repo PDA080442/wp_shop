@@ -114,6 +114,11 @@ class CartService implements CartServiceInterface
         return array_sum($this->loadCart());
     }
 
+    public function contents(): array
+    {
+        return $this->loadCart();
+    }
+
     /**
      * @return array<int, int>
      */

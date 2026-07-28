@@ -23,4 +23,9 @@ interface CartServiceInterface
     public function getTotal(): float;
 
     public function count(): int;
+
+    /**
+     * @return array<int, int>
+     */
+    public function contents(): array;
 }
