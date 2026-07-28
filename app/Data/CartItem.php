@@ -12,4 +12,19 @@ readonly class CartItem
         public int $quantity,
         public float $subtotal,
     ) {}
+
+    public function formattedPrice(): string
+    {
+        return number_format((float) $this->price, 2, '.', ' ').' ₽';
+    }
+
+    public function formattedSubtotal(): string
+    {
+        return number_format($this->subtotal, 2, '.', ' ').' ₽';
+    }
+
+    public function exceedsStock(): bool
+    {
+        return $this->quantity > $this->stock;
+    }
 }

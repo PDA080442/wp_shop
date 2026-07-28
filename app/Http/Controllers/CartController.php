@@ -13,7 +13,13 @@ class CartController extends Controller
 {
     public function index(): View
     {
-        return view('cart.index');
+        $items = cart()->getItems();
+
+        return view('cart.index', [
+            'items' => $items,
+            'total' => cart()->getTotal(),
+            'positionsCount' => $items->count(),
+        ]);
     }
 
     public function add(AddToCartRequest $request): RedirectResponse
