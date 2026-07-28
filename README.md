@@ -1,26 +1,24 @@
 # Shop
 
-Интернет-магазин на Laravel: каталог товаров, корзина (session-based) и оформление заказа без авторизации.
+Интернет-магазин на Laravel: каталог товаров, session-based корзина и оформление заказа без авторизации.
 
 ## О проекте
 
-Тестовое задание — monolith-приложение с server-side рендерингом. Пользователь просматривает каталог, добавляет товары в корзину и оформляет заказ, указав имя и email получателя.
+Monolith-приложение с server-side рендерингом (Blade). Пользователь просматривает каталог, добавляет товары в корзину и оформляет заказ, указав имя и email получателя. После подтверждения заказ сохраняется в БД, остатки уменьшаются, корзина очищается.
 
-
-## Стек технологий
+## Стек
 
 
 Backend: PHP 8.3+, Laravel 13
 Шаблоны: Blade
-UI: Tailwind CSS 4 + Vite 
-БД: SQLite
-Frontend-сборка: Vite 8, npm
+UI: Tailwind CSS 4, Vite 8
+БД: SQLite (MySQL — опционально)
+Тесты: PHPUnit 11 (67 тестов)
 
 ## Требования
 
-- PHP >= 8.3 с расширениями: `pdo`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`
-- Composer 2.x
-- Node.js 18+ и npm (для сборки assets)
+- PHP >= 8.3 с расширениями: pdo, mbstring, openssl, tokenizer, xml, ctype, json, bcmath
+- Node.js 18+ и npm (сборка CSS/JS)
 
 ## Quickstart
 
@@ -35,131 +33,119 @@ npm install
 npm run build
 ```
 
-### 2. Настройка окружения
+### 2. Окружение
 
 ```bash
 cp .env.example .env
 php artisan key:generate
-```
-
-```bash
 touch database/database.sqlite
 ```
 
-В `.env` укажите абсолютный путь к файлу БД:
+В `.env` укажите **абсолютный** путь к SQLite:
 
 ```env
 DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/stor/database/database.sqlite
 ```
 
-**MySQL (альтернатива):** раскомментируйте блок MySQL в `.env.example`, задайте `DB_CONNECTION=mysql`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
-
-### 3. Миграции и тестовые данные
+### 3. Миграции и данные
 
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
 
+`db:seed` создаёт тестового пользователя, 12 товаров (2 без остатка) и демо-заказы.
+
 ### 4. Запуск
 
 ```bash
 php artisan serve
+```
 
+Откройте [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+Для hot-reload CSS/JS (опционально, второй терминал):
+
+```bash
 npm run dev
 ```
 
-Откройте [http://127.0.0.1:8000].
+## Маршруты
 
-## Структура проекта
+Приложение не имеет REST API — все действия через HTML-формы и redirect. Ниже полный список web-маршрутов.
 
-```
-stor/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/     # ProductController, CartController, CheckoutController
-│   │   └── Requests/        # Form Request классы (валидация)
-│   ├── Models/              # Eloquent-модели (Product, Order — в разработке)
-│   ├── Services/            # Бизнес-логика (CartService, OrderService — в разработке)
-│   └── Providers/
-├── database/
-│   ├── migrations/
-│   ├── seeders/
-│   └── factories/
-├── resources/
-│   ├── views/
-│   │   ├── layouts/         # app.blade.php, header, footer
-│   │   ├── catalog/         # главная / каталог
-│   │   ├── products/        # карточка товара
-│   │   ├── cart/
-│   │   └── checkout/
-│   ├── css/app.css
-│   └── js/app.js
-├── routes/web.php
-├── tests/                   # Feature и Unit тесты
-└── b.md                     # бэклог проекта
-```
-
-### Контроллеры
-
-| Контроллер | Назначение |
-|------------|------------|
-| `ProductController` | Каталог (`/`) и карточка товара (`/products/{id}`) |
-| `CartController` | Корзина: просмотр, добавление, обновление, удаление |
-| `CheckoutController` | Оформление и сохранение заказа |
-
-### Маршруты
-
-| Метод | URI | Имя | Описание |
+| Метод | URL | Имя | Описание |
 |-------|-----|-----|----------|
 | GET | `/` | `catalog.index` | Каталог товаров |
-| GET | `/products/{id}` | `products.show` | Карточка товара |
-| GET | `/cart` | `cart.index` | Корзина |
-| POST | `/cart/add` | `cart.add` | Добавить в корзину |
-| PATCH | `/cart/update` | `cart.update` | Изменить количество |
-| DELETE | `/cart/remove` | `cart.remove` | Удалить позицию |
-| GET | `/checkout` | `checkout.index` | Оформление заказа |
-| POST | `/checkout` | `checkout.store` | Подтвердить заказ |
+| GET | `/products/{product}` | `products.show` | Карточка товара |
+| GET | `/cart` | `cart.index` | Просмотр корзины |
+| POST | `/cart/add` | `cart.add` | Добавить товар в корзину |
+| PATCH | `/cart/{product}` | `cart.update` | Изменить количество позиции |
+| DELETE | `/cart/{product}` | `cart.remove` | Удалить позицию из корзины |
+| DELETE | `/cart` | `cart.clear` | Очистить корзину |
+| GET | `/checkout` | `checkout.index` | Форма оформления заказа |
+| POST | `/checkout` | `checkout.store` | Подтвердить и сохранить заказ |
+| GET | `/checkout/success/{order}` | `checkout.success` | Страница успешного заказа |
 
-### Artisan-команды
+Корзина хранится в сессии (`session('cart')` — массив `product_id => quantity`).
+
+## Модели и связи
+
+### Product (`products`)
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `name` | string | Название |
+| `price` | decimal(10,2) | Цена (≥ 0) |
+| `stock` | unsigned int | Остаток (≥ 0) |
+| `image` | string, nullable | Путь к файлу в `public/` или URL |
+
+Ключевые методы: `isInStock()`, `canOrder(int $quantity)`, `formattedPrice()`, `imageUrl()`.
+
+### Order (`orders`)
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `customer_name` | string | Имя получателя |
+| `customer_email` | string | Email (индекс) |
+| `total` | decimal(10,2) | Сумма заказа |
+
+Связь: `hasMany(OrderItem::class)` через `items()`.
+
+### OrderItem (`order_items`)
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| `order_id` | FK | Заказ |
+| `product_id` | FK, nullable | Товар (nullOnDelete при удалении товара) |
+| `product_name` | string | Снимок названия на момент заказа |
+| `price` | decimal(10,2) | Снимок цены |
+| `quantity` | unsigned int | Количество (≥ 1) |
+
+Связи: `belongsTo(Order::class)`, `belongsTo(Product::class)`.
+
+При сохранении/удалении позиции `Order::recalculateTotal()` пересчитывает `orders.total`.
+
+
+## Artisan-команды
 
 | Команда | Описание |
 |---------|----------|
 | `php artisan migrate` | Выполнить миграции |
-| `php artisan db:seed` | Заполнить БД (тестовый user + ProductSeeder) |
-| `php artisan products:seed {count=12}` | Заполнить товарами (faker) |
-| `php artisan products:seed 12 --fresh` | Очистить products и создать 12 |
-| `php artisan test` | Запустить тесты |
+| `php artisan db:seed` | Полный seed: user + 12 товаров + демо-заказы |
+| `php artisan products:seed {count=12}` | Создать N случайных товаров (Faker) |
+| `php artisan products:seed 12 --fresh` | Очистить `products` и создать 12 заново |
+| `php artisan test` | Запустить тесты (67) |
 | `php artisan serve` | Локальный dev-сервер |
+| `./vendor/bin/pint --test` | Проверка PSR-12 |
 
-Фото товаров лежат в `public/images/products/product-01.jpg … product-12.jpg`; фабрика
-проставляет их по кругу в поле `products.image`. Чтобы заменить картинку — положите файл
-с тем же именем или запишите в `image` свой путь либо внешний URL. Если файла нет, товар
-покажет сгенерированный градиентный плейсхолдер.
+### Переменные seed в `.env`
 
-## Функциональность
-
-### Каталог (`/`)
-
-Главная страница со списком товаров: название, цена, остаток. Пагинация и карточки — EP3.
-
-### Карточка товара (`/products/{id}`)
-
-Полная информация о товаре, выбор количества, кнопка «В корзину». При `stock = 0` — добавление заблокировано.
-
-### Корзина (`/cart`)
-
-Session-based хранение без авторизации. Просмотр позиций, изменение количества, удаление, итоговая сумма.
-
-### Оформление заказа (`/checkout`)
-
-Форма: имя получателя и email. Сводка заказа. После подтверждения — запись в `orders` и `order_items`, уменьшение `stock`, очистка корзины.
-
-### Ограничение по остатку
-
-- `stock = 0` → товар помечен «Нет в наличии», кнопка недоступна
-- `quantity > stock` → ошибка валидации на всех этапах (каталог, корзина, checkout)
+```env
+PRODUCT_SEED_COUNT=12      # количество товаров в ProductSeeder
+PRODUCT_SEED_FRESH=false   # true — пересоздать товары при db:seed
+```
 
 ## Тесты
 
@@ -167,4 +153,22 @@ Session-based хранение без авторизации. Просмотр �
 php artisan test
 ```
 
-Сейчас включены стандартные примеры Laravel. Feature-тесты каталога, корзины и checkout — EP8.
+Основные feature-файлы: `CatalogAndProductTest`, `ShoppingCartTest`, `CheckoutTest`. Unit: `CartServiceTest`, `OrderServiceTest`, `ProductCanOrderTest`.
+
+## Структура проекта
+
+```
+stor/
+├── app/
+│   ├── Http/Controllers/    # Product, Cart, Checkout
+│   ├── Http/Requests/         # Form Request валидация
+│   ├── Models/                # Product, Order, OrderItem
+│   ├── Services/              # CartService, OrderService
+│   ├── Data/CartItem.php       # DTO позиции корзины
+│   └── helpers.php            # cart(), money()
+├── database/migrations/
+├── database/seeders/
+├── resources/views/           # catalog, products, cart, checkout
+├── routes/web.php
+├── tests/                     # Feature + Unit
+```
